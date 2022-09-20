@@ -15,24 +15,48 @@
  */
 class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        return dfs(p,q);
-        
-    }
-    
-    public boolean dfs(TreeNode p, TreeNode q){
-        
+ 
         if(p==null && q==null)
             return true;
-        if((p==null && q!=null) || (p!=null && q==null))
-            return false;
-        if(p.val != q.val)
+        
+        if(p==null || q==null)
             return false;
         
-        return dfs(p.left,q.left) && dfs(p.right, q.right);
+        Stack<TreeNode> stack1 = new Stack();
+        Stack<TreeNode> stack2 = new Stack();
+        
+        stack1.push(p);
+        stack2.push(q);
+        
+        while(!stack1.isEmpty() && !stack2.isEmpty()){
+            TreeNode node1 = stack1.pop();
+            TreeNode node2 = stack2.pop();
+            
+            if(node1.val != node2.val)
+                return false;
+            
+            if(node1.left != null && node2.left != null){
+                stack1.push(node1.left);
+                stack2.push(node2.left);
+            }else if(!(node1.left == null && node2.left == null)){
+                return false;
+            }
+            
+            if(node1.right != null && node2.right != null){
+                stack1.push(node1.right);
+                stack2.push(node2.right);
+            }else if(!(node2.right == null && node2.right ==null)){
+                return false;
+                
+            }
+        }
+        
+        if(stack1.size() != stack2.size())
+            return false;
+        return true;
+        
     }
-    
 }
-
 
 
 
